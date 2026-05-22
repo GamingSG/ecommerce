@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node ./scripts/patch-rollup-native.js || true",
     "build": "vite build",
     "preview": "vite preview"
   },
