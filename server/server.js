@@ -37,6 +37,13 @@ app.use(morgan('dev'));
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve React static files in production
+if (process.env.NODE_ENV === 'production') {
+  const clientPath = path.join(__dirname, '../client/dist');
+  app.use(express.static(clientPath));
+}
+
+
 // ─── API Routes ──────────────────────────────
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -49,6 +56,13 @@ app.use('/api/upload', uploadRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running', timestamp: new Date() });
 });
+
+// ─── SPA Fallback (React Router) ─────────────
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  });
+}
 
 // ─── Error Handlers ──────────────────────────
 app.use(notFound);

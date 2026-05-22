@@ -1,15 +1,14 @@
 services:
   - type: web
-    name: ecommerce-api
+    name: ecommerce-app
     env: node
-    rootDir: server
-    buildCommand: npm install
-    startCommand: node server.js
+    buildCommand: cd client && npm install && npm run build && cd ../server && npm install
+    startCommand: node server/server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 5000
+        value: 10000
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
